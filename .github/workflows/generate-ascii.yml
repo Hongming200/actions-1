@@ -6,25 +6,32 @@ jobs:
     ascii_job:
         runs-on: ubuntu-latest
         steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v4
 
-        - name: Checkout Repo
-          uses: actions/checkout@v4
+            
+            # - name: Install Cowsay Program #installing cowsay program
+            #   run: sudo apt-get install cowsay -y
 
-          
-        - name: Install Cowsay Program
-          run: sudo apt-get install cowsay -y
+            # - name: Execute Cowsay CMD 
+            #   run: cowsay -f dragon "Run for cover, I am a DRAGOn....RAWR" >> dragon.txt
 
-        - name: Execute Cowsay CMD
-          run: cowsay -f dragon "Run for cover, I am a DRAGOn....RAWR" >> dragon.txt
+            # - name: Test File Exists
+            #   run: grep -i "dragon" dragon.txt
 
-        - name: Test File Exists
-          run: grep -i "dragon" dragon.txt
+            # - name: Read file
+            #   run: cat dragon.txt
 
-        - name: Read file
-          run: cat dragon.txt
+            - name: List Repo Files
+              run: ls -ltra
 
-        - name: List Repo Files
-          run: ls -ltra
+            #Can replace the above steps by executing the command found in your shell script
+            - name: Executing Shell script
+              run: ./ascii-script.sh
+
+
+# Files that are generated during workflows and automatically deleted once done
+# Can also disable specific workflows on github actions
         
 
 
