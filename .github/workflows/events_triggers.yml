@@ -24,6 +24,7 @@ jobs:
       run: echo docker push ${{ env.CONTAINER_REGISTRY }}/${{ vars.DOCKER_USERNAME }}/imageName:latest
     
   deploy:
+    # timeout-minutes: 1 # Can be used in job level. Cancel job if not done in 1 minute
     needs: docker
     concurrency:
       group: production-deployment #just a name
@@ -32,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Docker run
+      timeout-minutes: 1  # Cancel step if not done within 1 minute
       run: |
         echo docker run -d -p 8080:80 ${{ env.CONTAINER_REGISTRY }}/${{ vars.DOCKER_USERNAME }}/$IMAGE_NAME:latest
-        sleep 600s
+        sleep 6000s
