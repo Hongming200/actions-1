@@ -7,10 +7,24 @@ on:
 jobs:
     deploy-on-ubuntu:
         #Instead of having different jobs to execute on different OS, we can use Matrix
+        # NOTE: if one of the matrix fails, the following matrixes (jobs) will not run
         strategy:
+          fail-fast: false   #By default is true. Cancel any job that is in queue when another job fails
+          max-parallel: 2  # Limiting how many jobs that can run on parallel
           matrix:
             os: [ubuntu-latest, ubuntu-20.04, windows-latest]  #The key can be names however you wish
             images: [hello-world, alpine]
+
+            # alpine image does not work on windows-latest. We need to exclude it
+            exclude:
+              - images: alpine
+                os: windows-latest
+            
+            # Similarly, if you want to run specific images on specific matrix, use include
+            include:
+              - images: amd64/alpine
+                os: ubuntu-20.04
+            
         runs-on: ${{ matrix.os }}
         steps:
         - name: Echo Docker Results
