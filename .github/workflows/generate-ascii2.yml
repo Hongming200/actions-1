@@ -18,7 +18,7 @@ jobs:
 
             # File created in one job is not accessible in another job. Hence, we need to upload and download artifacts
             - name: Upload Dragon text file
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                 name: dragon-text-file
                 path: dragon.txt
@@ -32,7 +32,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Download Dragon text file
-              uses: actions/download-artifact@v3
+              uses: actions/download-artifact@v4
               with:
                 name: dragon-text-file  #This artifact name is taken from the name you assigned in job 1
 
@@ -48,7 +48,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Download Dragon text file
-              uses: actions/download-artifact@v3
+              uses: actions/download-artifact@v4
               with:
                 name: dragon-text-file  #This artifact name is taken from the name you assigned in job 1
 
