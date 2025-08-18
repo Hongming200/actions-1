@@ -1,4 +1,4 @@
-name: Exploring Variables and Secrets
+name: Exploring Concurrency
 
 on:
 #   push
@@ -27,8 +27,8 @@ jobs:
     needs: docker
     concurrency:
       group: production-deployment #just a name
-      cancel-in-progress: true #Cancels any job or workflows in the same concurrency group if TRUE. Cancel existing workflow/job and run a new one
-
+      # cancel-in-progress: true #Cancels any job or workflows in the same concurrency group if TRUE. Cancel existing workflow/job and run a new one
+      cancel-in-progress: false # Does not cancel the current job/workflow and will wait till it is finished before doing this job
     runs-on: ubuntu-latest
     steps:
     - name: Docker run
