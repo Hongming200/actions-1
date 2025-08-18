@@ -2,21 +2,26 @@ name: Generate ASCII Artwork 2
 
 on: push
 
-# 2. File created in one job is not accessible in another job
+
 jobs:
     build_job_1:
         # Each job runs on their own VM
         runs-on: ubuntu-latest
         steps:
- 
+  
             - name: Install Cowsay Program
               run: sudo apt-get install cowsay -y
 
             - name: Execute Cowsay CMD
               run: cowsay -f dragon "Run for cover, I am a DRAGON....RAWR" >> dragon.txt
 
-            - name: Sleep for 30 seconds
-              run: sleep 30
+
+            # File created in one job is not accessible in another job. Hence, we need to upload and download artifacts
+            - name: Upload Dragon text file
+              uses: actions/upload-artifact@v3
+              with:
+                name: dragon-text-file
+                path: dragon.txt
 
     test_job_2:
 
@@ -26,8 +31,10 @@ jobs:
         # Each job runs on their own VM
         runs-on: ubuntu-latest
         steps:
-            - name: Sleep for 10 seconds
-              run: sleep 10
+            - name: Download Dragon text file
+              uses: actions/download-artifact@v3
+              with:
+                name: dragon-text-file  #This artifact name is taken from the name you assigned in job 1
 
             - name: Test File Exists
               run: grep -i "dragon" dragon.txt
@@ -40,6 +47,11 @@ jobs:
         # Each job runs on their own VM
         runs-on: ubuntu-latest
         steps:
+            - name: Download Dragon text file
+              uses: actions/download-artifact@v3
+              with:
+                name: dragon-text-file  #This artifact name is taken from the name you assigned in job 1
+
             - name: Read File
               run: cat dragon.txt
 
