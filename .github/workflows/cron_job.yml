@@ -25,7 +25,13 @@ jobs:
     
   deploy:
     needs: docker
+    concurrency:
+      group: production-deployment #just a name
+      cancel-in-progress: true #Cancels any job or workflows in the same concurrency group if TRUE. Cancel existing workflow/job and run a new one
+
     runs-on: ubuntu-latest
     steps:
     - name: Docker run
-      run: echo docker run -d -p 8080:80 ${{ env.CONTAINER_REGISTRY }}/${{ vars.DOCKER_USERNAME }}/$IMAGE_NAME:latest
+      run: |
+        echo docker run -d -p 8080:80 ${{ env.CONTAINER_REGISTRY }}/${{ vars.DOCKER_USERNAME }}/$IMAGE_NAME:latest
+        sleep 600s
