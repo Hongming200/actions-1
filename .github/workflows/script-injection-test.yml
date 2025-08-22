@@ -1,0 +1,26 @@
+name: Label Issues (Script Injection)
+
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  assign-label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+
+      - name: Add a Label
+      # Writing the issue title in env variable as oppose to the run command. This prevent script injection
+      # and allows us to use the issue title in the script
+        env:
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          issue_title: ${{ github.event.issue.title }}
+        run: |
+          if [[ "$issue_title" == *"bug"* ]]; then
+            echo "Issue is about a bug!"
+            echo "Assigning Label - BUG .... .... .... ....."
+          else
+            echo "Not a bug"
+          fi
