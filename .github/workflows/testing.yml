@@ -1,10 +1,10 @@
 name: Testing
 on:
     workflow_dispatch:
-    push:
 
 jobs:
     testing:
+        # Must have at least 3 labels to match the self-hosted runner
         runs-on: [self-hosted, Windows, prod]
         steps:
             - name: Echo Content
